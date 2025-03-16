@@ -1,0 +1,43 @@
+name: iOS Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          cd x86_64/dyldExploitMacOS_x86_64.xcodeproj
+          pod install --project-directory=.
+
+      - name: Build IPA
+        run: |
+          xcodebuild -workspace x86_64/dyldExploitMacOS_x86_64.xcodeproj/project.xcworkspace \
+            -scheme YourScheme \
+            -sdk iphoneos \
+            -configuration Release \
+            -archivePath $GITHUB_WORKSPACE/build/App.xcarchive archive
+
+      - name: Export IPA
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath $GITHUB_WORKSPACE/build/App.xcarchive \
+            -exportOptionsPlist ExportOptions.plist \
+            -exportPath $GITHUB_WORKSPACE/build
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v3
+        with:
+          name: App.ipa
+          path: $GITHUB_WORKSPACE/build
