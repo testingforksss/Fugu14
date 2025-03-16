@@ -24,13 +24,14 @@ jobs:
 
       - name: Build IPA
         run: |
-          xcodebuild -project Fugu14App.xcworkspace \
-                     -scheme "YourScheme" \
-                     -sdk iphoneos \
-                     -configuration Release \
-                     -archivePath $GITHUB_WORKSPACE/build/App.xcarchive \
-                     archive
+          xcodebuild -workspace arm/iOS/Fugu14App/Fugu14App.xcodeproj/YourApp.xcworkspace \
+          -scheme "YourScheme" \
+          -sdk iphoneos \
+          -configuration Release \
+          -archivePath $GITHUB_WORKSPACE/build/App.xcarchive \
+          archive
+          
           xcodebuild -exportArchive \
-                     -archivePath $GITHUB_WORKSPACE/build/App.xcarchive \
-                     -exportOptionsPlist exportOptions.plist \
-                     -exportPath $GITHUB_WORKSPACE/build/
+          -archivePath $GITHUB_WORKSPACE/build/App.xcarchive \
+          -exportOptionsPlist exportOptions.plist \
+          -exportPath $GITHUB_WORKSPACE/build/
