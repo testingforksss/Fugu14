@@ -7,40 +7,33 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: macos-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest
+        run: sudo xcode-select --switch /Applications/Xcode.app
 
       - name: Install dependencies
-        run: |
-          pod install || echo "No CocoaPods dependencies"
+        run: brew install ideviceinstaller ios-deploy
 
       - name: Build IPA
         run: |
-          xcodebuild -workspace Fugu14.xcworkspace \
-                     -scheme Fugu14 \
+          xcodebuild -workspace YourApp.xcworkspace \
+                     -scheme YourScheme \
                      -sdk iphoneos \
                      -configuration Release \
-                     -archivePath build/Fugu14.xcarchive \
+                     -archivePath $GITHUB_WORKSPACE/build/App.xcarchive \
                      archive
-
           xcodebuild -exportArchive \
-                     -archivePath build/Fugu14.xcarchive \
+                     -archivePath $GITHUB_WORKSPACE/build/App.xcarchive \
                      -exportOptionsPlist exportOptions.plist \
-                     -exportPath build
+                     -exportPath $GITHUB_WORKSPACE/build
 
       - name: Upload IPA
-        uses: actions/upload-artifact@v3
-        with:
-          name: Fugu14-IPA
-          path: build/*.ipa
+        uses: actions/upload-
