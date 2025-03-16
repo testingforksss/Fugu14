@@ -24,7 +24,7 @@ jobs:
 
       - name: Build IPA
         run: |
-          xcodebuild -workspace arm/iOS/Fugu14App/Fugu14App.xcodeproj/YourApp.xcworkspace \
+          xcodebuild -workspace $GITHUB_WORKSPACE/arm/iOS/Fugu14App/Fugu14App.xcodeproj/YourApp.xcworkspace \
           -scheme "YourScheme" \
           -sdk iphoneos \
           -configuration Release \
