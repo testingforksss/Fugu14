@@ -33,7 +33,3 @@ jobs:
           xcodebuild -exportArchive \
                      -archivePath $GITHUB_WORKSPACE/build/App.xcarchive \
                      -exportOptionsPlist exportOptions.plist \
-                     -exportPath $GITHUB_WORKSPACE/build
-
-      - name: Upload IPA
-        uses: actions/upload-
