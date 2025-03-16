@@ -16,8 +16,10 @@ jobs:
       - name: Setup Xcode version
         run: sudo xcode-select -s /Applications/Xcode_15.4.app
 
-      - name: Move workspace (если нужно)
-        run: mv arm/iOS/Fugu14App/Fugu14App.xcodeproj/YourApp.xcworkspace arm/iOS/Fugu14App/
+      - name: Move workspace
+        run: |
+          rm -rf arm/iOS/Fugu14App/YourApp.xcworkspace
+          mv arm/iOS/Fugu14App/Fugu14App.xcodeproj/YourApp.xcworkspace arm/iOS/Fugu14App/
 
       - name: Install dependencies
         run: pod install
@@ -30,3 +32,4 @@ jobs:
             -sdk iphoneos \
             -configuration Release \
             -archivePath build/App.xcarchive archive
+
